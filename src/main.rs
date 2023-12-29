@@ -1,15 +1,4 @@
-#[derive(Debug)]
-struct Parser {
-    pos: usize,
-    input: String,
-}
-
-#[derive(Debug)]
-struct Ast {
-    op: char,
-    lhs: i32,
-    rhs: i32,
-}
+mod parser;
 
 fn main() {
     let arguments = std::env::args().collect::<Vec<String>>();
@@ -21,19 +10,15 @@ fn main() {
 
     let calculation = arguments[1].clone();
 
-}
+    let mut parser = parser::Parser::new(calculation);
+    let result = parser.parse();
 
-impl Parser {
-    fn new(&self, _input: &str) -> Ast {
-        let mut parser = Parser {
-            pos: 0,
-            input: _input.to_string(),
-        };
-
-        self.parse_expr()
-    }
-
-    fn parse_expr(&self) -> Ast{
+    match result.op {
+        '+' => println!("{}", result.lhs + result.rhs),
+        '-' => println!("{}", result.lhs - result.rhs),
+        '*' => println!("{}", result.lhs * result.rhs),
+        '/' => println!("{}", result.lhs / result.rhs),
+        _ => println!("Unknown operator"),
     }
 
 }
